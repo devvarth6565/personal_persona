@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import OpenAI from "openai";
 import { Send, Bot, User, MoreVertical, Phone, Video } from "lucide-react";
 
-// --- 1. CONFIGURATION ---
+
 const openai = new OpenAI({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true 
 });
 
-// --- 2. THE TOXIC PERSONA BRAIN ---
+
 const SYSTEM_PROMPT = `
 You are "Dev", a chaotic final-year student from Chandigarh. You are NOT a helpful assistant. You are a "Bitchass" friend who happens to know code.
 
@@ -54,7 +54,7 @@ User: "Thanks."
 You: "I fuck ted."
 `;
 
-// --- 3. MAIN COMPONENT ---
+
 export default function ChatBox() {
   const [messages, setMessages] = useState([
     { role: "assistant", content: "Hello! I'm Dev. kya hal chal bitch..?" }
@@ -63,7 +63,7 @@ export default function ChatBox() {
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef(null);
 
-  // Auto-scroll to bottom
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -73,7 +73,7 @@ export default function ChatBox() {
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    // A. Add User Message to UI
+
     const userMessage = { role: "user", content: input };
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
@@ -81,16 +81,16 @@ export default function ChatBox() {
     setIsLoading(true);
 
     try {
-      // B. Call OpenAI API
+
       const response = await openai.chat.completions.create({
-        model: "gpt-4o", // Fixed model name to ensure it works
+        model: "gpt-4o", 
         messages: [
           { role: "system", content: SYSTEM_PROMPT }, 
           ...newMessages
         ],
       });
 
-      // C. Get AI Response
+
       const aiContent = response.choices[0].message.content;
       setMessages((prev) => [...prev, { role: "assistant", content: aiContent }]);
 
@@ -105,10 +105,10 @@ export default function ChatBox() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
       
-      {/* Main Chat Container - Mobile Phone Style */}
+
       <div className="w-full max-w-md bg-white rounded-[2rem] shadow-2xl overflow-hidden border border-gray-200 h-[80vh] flex flex-col relative">
         
-        {/* Header */}
+
         <div className="bg-gray-900 text-white p-4 flex items-center justify-between shadow-md z-10">
           <div className="flex items-center gap-3">
             <div className="relative">
@@ -129,7 +129,7 @@ export default function ChatBox() {
           </div>
         </div>
 
-        {/* Messages Area */}
+
         <div 
           ref={scrollRef}
           className="flex-1 bg-gray-50 p-4 overflow-y-auto space-y-4"
@@ -147,7 +147,7 @@ export default function ChatBox() {
                    {msg.role === "user" ? <User size={14} className="text-white"/> : <Bot size={14} className="text-white"/>}
                 </div>
 
-                {/* Message Bubble */}
+
                 <div 
                   className={`p-3 text-sm shadow-sm ${
                     msg.role === "user" 
@@ -169,7 +169,7 @@ export default function ChatBox() {
           )}
         </div>
 
-        {/* Input Area */}
+
         <div className="p-4 bg-white border-t border-gray-100 flex items-center gap-2">
           <input 
             value={input}
